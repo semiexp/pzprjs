@@ -43,6 +43,11 @@ pzpr.classmgr.makeCommon({
 		qinfo: 0,
 		trial: 0, // TrialModeのstateを保持する変数
 
+		/* Answer by auto solver */
+		qansBySolver: 0,
+		qsubBySolver: 0,
+		lineBySolver: 0,
+
 		propques: ["ques", "qdir", "qnum", "qnum2", "qchar"],
 		propans: ["qans", "anum", "line", "trial"],
 		propsub: ["qsub", "qcmp", "snum"],
@@ -165,6 +170,9 @@ pzpr.classmgr.makeCommon({
 				this.trial = trialstage;
 			}
 
+			if (this.puzzle.editmode) {
+				this.board.autoSolve();
+			}
 			this.board.modifyInfo(this, this.group + "." + prop);
 
 			if (!!this.posthook[prop]) {
@@ -826,7 +834,7 @@ pzpr.classmgr.makeCommon({
 		// border.removeLineAndQsub()  removes line and qsub
 		//-----------------------------------------------------------------------
 		isLine: function() {
-			return this.line > 0;
+			return this.line > 0 || this.lineBySolver > 0;
 		},
 		setLine: function(id) {
 			this.setLineVal(1);

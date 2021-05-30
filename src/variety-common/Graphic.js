@@ -1341,7 +1341,7 @@ pzpr.classmgr.makeCommon({
 			for (var i = 0; i < blist.length; i++) {
 				var border = blist[i];
 				g.vid = "b_peke_" + border.id;
-				if (border.qsub === 2) {
+				if (border.qsub === 2 || border.qsubBySolver === 2) {
 					g.strokeStyle = !border.trial ? this.pekecolor : this.trialcolor;
 					g.strokeCross(border.bx * this.bw, border.by * this.bh, size - 1);
 				} else {

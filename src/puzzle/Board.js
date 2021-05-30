@@ -90,6 +90,17 @@ pzpr.classmgr.makeCommon({
 			return 1;
 		},
 
+		autoSolve: function(force) {
+		},
+
+		is_autosolve: false,
+		updateIsAutosolve: function(mode) {
+			if (this.is_autosolve !== mode) {
+				this.is_autosolve = mode;
+				this.autoSolve();
+			}
+		},
+
 		//---------------------------------------------------------------------------
 		// bd.initBoardSize() 指定されたサイズで盤面の初期化を行う
 		//---------------------------------------------------------------------------

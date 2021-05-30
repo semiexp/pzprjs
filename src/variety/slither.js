@@ -95,7 +95,64 @@
 
 	Board: {
 		hasborder: 2,
-		borderAsLine: true
+		borderAsLine: true,
+		autoSolve: function (force) {
+			if (!this.is_autosolve && !force) {
+				var needUpdateField = false;
+				for (var i = 0; i < this.border.length; ++i) {
+					var b = this.border[i];
+					if (b.lineBySolver !== 0 || b.qsubBySolver !== 0) {
+						needUpdateField = true;
+						b.lineBySolver = 0;
+						b.qsubBySolver = 0;
+					}
+				}
+				if (needUpdateField) this.puzzle.painter.paintAll();
+				return;
+			}
+			// detect the problem
+			var height = this.maxby / 2;
+			var width = this.maxbx / 2;
+			var problem = [];
+			for (var y = 0; y < height; ++y) {
+				var row = [];
+				for (var x = 0; x < width; ++x) {
+					row.push(-1);
+				}
+				problem.push(row);
+			}
+			var s = 0;
+			for (var i = 0; i < this.cell.length; ++i) {
+				if (this.cell[i].qnum >= 0) {
+					problem[(this.cell[i].by - 1) / 2][(this.cell[i].bx - 1) / 2] = this.cell[i].qnum;
+					s += this.cell[i].qnum;
+				}
+			}
+
+			var answer = Cspuz.puzzle.solveSlitherlink(height, width, problem);
+			if (answer !== null) {
+				for (var i = 0; i < this.border.length; ++i) {
+					var b = this.border[i];
+					var value;
+					if (b.by % 2 === 0) {
+						value = answer.horizontal[b.by / 2][(b.bx - 1) / 2];
+					} else {
+						value = answer.vertical[(b.by - 1) / 2][b.bx / 2];
+					}
+					if (value === 0) {
+						b.lineBySolver = 0;
+						b.qsubBySolver = 0;
+					} else if (value === 1) {
+						b.lineBySolver = 1;
+						b.qsubBySolver = 0;
+					} else if (value === 2) {
+						b.lineBySolver = 0;
+						b.qsubBySolver = 2;
+					}
+				}
+			}
+			this.puzzle.painter.paintAll();
+		}
 	},
 
 	LineGraph: {

@@ -23,7 +23,8 @@ module.exports = function(grunt){
         files : [
           { expand: true, cwd: 'src-ui/css', src: ['*.css'], dest: 'dist/css' },
           { expand: true, cwd: 'src-ui/img', src: ['*.png'], dest: 'dist/img' },
-          { expand: true, cwd: 'src-ui',     src: ['*'],     dest: 'dist'     }
+          { expand: true, cwd: 'src-ui',     src: ['*'],     dest: 'dist'     },
+          { expand: true, cwd: 'src-ui/js',  src: ['solver.js'], dest: 'dist/js' }
         ]
       }
     },

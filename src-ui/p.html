@@ -19,6 +19,7 @@ if ('serviceWorker' in navigator) {
 </script>
 <script type="text/javascript" src="./js/pzpr.js?<%= git.hash %>"></script>
 <script type="text/javascript" src="./js/pzpr-ui.js?<%= git.hash %>"></script>
+<script type="text/javascript" src="./js/solver.js?<%= git.hash %>"></script>
 <title>puzz.link player</title>
 </head>
 
@@ -305,6 +306,13 @@ if ('serviceWorker' in navigator) {
         <span>__黒マスの色分けをする__Color each block__</span>
       </label>
       <button class="btn" data-button-exec="irowake">__色分けしなおす__Change the block colors__</button>
+    </div>
+    <div class="config" data-config="autosolver">
+      <label>
+        <input type="checkbox">
+        <span>__リアルタイムソルバーを有効にする__Enable the real time solver__</span>
+      </label>
+      <button class="btn" data-button-exec="run_autosolver">__自動解答__Run solver__</button>
     </div>
   </div>
   <hr class="separator" id="separator1">

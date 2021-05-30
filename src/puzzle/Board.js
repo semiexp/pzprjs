@@ -163,6 +163,11 @@ pzpr.classmgr.makeCommon({
 				groups2.allclear(false);
 			}
 			groups.length = len;
+			for (var i = 0; i < groups.length; ++i) {
+				groups[i].qansBySolver = 0;
+				groups[i].qsubBySolver = 0;
+				groups[i].lineBySolver = 0;
+			}
 			return len - clen;
 		},
 		getGroup: function(group) {

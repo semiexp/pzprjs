@@ -121,11 +121,9 @@
 				}
 				problem.push(row);
 			}
-			var s = 0;
 			for (var i = 0; i < this.cell.length; ++i) {
 				if (this.cell[i].qnum >= 0) {
 					problem[(this.cell[i].by - 1) / 2][(this.cell[i].bx - 1) / 2] = this.cell[i].qnum;
-					s += this.cell[i].qnum;
 				}
 			}
 
@@ -149,6 +147,11 @@
 						b.lineBySolver = 0;
 						b.qsubBySolver = 2;
 					}
+				}
+			} else {
+				for (var i = 0; i < this.border.length; ++i) {
+					this.border[i].lineBySolver = 0;
+					this.border[i].qsubBySolver = 2;
 				}
 			}
 			this.puzzle.painter.paintAll();

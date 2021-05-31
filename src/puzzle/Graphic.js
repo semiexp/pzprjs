@@ -97,6 +97,12 @@
 
 			pekecolor: "rgb(0, 127, 0)",
 
+			// Colors of components produced by solver
+			solvercolor: "rgb(192, 192, 255)",
+			solverlinecolor: "rgb(0, 160, 192)",
+			solvertrialcolor: "rgb(128, 128, 192)",
+			solverpekecolor: "rgb(0, 160, 192)",
+
 			// 境界線と黒マスを分ける色(BoxBorder)
 			bbcolor: "rgb(160, 160, 160)",
 

@@ -834,7 +834,10 @@ pzpr.classmgr.makeCommon({
 		// border.removeLineAndQsub()  removes line and qsub
 		//-----------------------------------------------------------------------
 		isLine: function() {
-			return this.line > 0 || this.lineBySolver > 0;
+			return this.line > 0;
+		},
+		isLineBySolver: function () {
+			return this.lineBySolver > 0;
 		},
 		setLine: function(id) {
 			this.setLineVal(1);

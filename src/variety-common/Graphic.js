@@ -1198,7 +1198,7 @@ pzpr.classmgr.makeCommon({
 		},
 		getLineColor: function(border) {
 			this.addlw = 0;
-			if (border.isLine()) {
+			if (border.isLine() || border.isLineBySolver()) {
 				var info = border.error || border.qinfo,
 					puzzle = this.puzzle;
 				var isIrowake =
@@ -1220,7 +1220,15 @@ pzpr.classmgr.makeCommon({
 				} else if (isIrowake) {
 					return border.path.color;
 				} else {
-					return border.trial ? this.trialcolor : this.linecolor;
+					if (border.isLineBySolver()) {
+						if (border.isLine()) {
+							return border.trial ? this.solvertrialcolor : this.solverlinecolor;
+						} else {
+							return this.solvercolor;
+						}
+					} else {
+						return border.trial ? this.trialcolor : this.linecolor;
+					}
 				}
 			}
 			return null;
@@ -1342,7 +1350,15 @@ pzpr.classmgr.makeCommon({
 				var border = blist[i];
 				g.vid = "b_peke_" + border.id;
 				if (border.qsub === 2 || border.qsubBySolver === 2) {
-					g.strokeStyle = !border.trial ? this.pekecolor : this.trialcolor;
+					var c;
+					if (border.qsub === 2 && border.qsubBySolver === 2) {
+						c = !border.trial ? this.solverpekecolor : this.solvertrialcolor;
+					} else if (border.qsubBySolver === 2) {
+						c = this.solvercolor;
+					} else {
+						c = !border.trial ? this.pekecolor : this.trialcolor;
+					}
+					g.strokeStyle = c;
 					g.strokeCross(border.bx * this.bw, border.by * this.bh, size - 1);
 				} else {
 					g.vhide();

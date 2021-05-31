@@ -379,7 +379,7 @@
 					break;
 				case "autosolver":
 				case "run_autosolver":
-					exec = pid === "slither";
+					exec = pid === "slither" || pid === "mashu";
 					break;
 				default:
 					exec = !!this.list[name];

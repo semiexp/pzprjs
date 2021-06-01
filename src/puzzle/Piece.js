@@ -549,6 +549,10 @@ pzpr.classmgr.makeCommon({
 			return this.qsub === 1;
 		},
 
+		isDotBySolver: function () {
+			return this.qsubBySolver === 1;
+		},
+
 		//---------------------------------------------------------------------------
 		// cell.isEmpty() / cell.isValid() 不定形盤面などで、入力できるマスか判定する
 		//---------------------------------------------------------------------------

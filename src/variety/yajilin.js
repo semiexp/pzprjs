@@ -281,7 +281,99 @@
 		}
 	},
 	Board: {
-		hasborder: 1
+		hasborder: 1,
+		autoSolve: function (force) {
+			if (!this.is_autosolve && !force) {
+				var needUpdateField = false;
+				for (var i = 0; i < this.border.length; ++i) {
+					var b = this.border[i];
+					if (b.lineBySolver !== 0 || b.qsubBySolver !== 0) {
+						needUpdateField = true;
+						b.lineBySolver = 0;
+						b.qsubBySolver = 0;
+					}
+				}
+				for (var i = 0; i < this.cell.length; ++i) {
+					var c = this.cell[i];
+					if (c.qansBySolver !== 0 || c.qsubBySolver !== 0) {
+						needUpdateField = true;
+						c.qansBySolver = 0;
+						c.qsubBySolver = 0;
+					}
+				}
+				if (needUpdateField) this.puzzle.painter.paintAll();
+				return;
+			}
+			// detect the problem
+			var height = this.maxby / 2;
+			var width = this.maxbx / 2;
+			var problem = [];
+			for (var y = 0; y < height; ++y) {
+				var row = [];
+				for (var x = 0; x < width; ++x) {
+					row.push(null);
+				}
+				problem.push(row);
+			}
+			var dirs = [-1, 0, 3, 1, 2];
+			console.log(this.cell);
+			for (var i = 0; i < this.cell.length; ++i) {
+				if (this.cell[i].qnum !== -1) {
+					var n = this.cell[i].qnum;
+					problem[(this.cell[i].by - 1) / 2][(this.cell[i].bx - 1) / 2] = {
+						direction: n === -2 ? -1 : dirs[this.cell[i].qdir],
+						value: n
+					};
+				}
+			}
+
+			var answer = Cspuz.puzzle.solveYajilin(height, width, problem);
+			if (answer !== null) {
+				for (var i = 0; i < this.border.length; ++i) {
+					var b = this.border[i];
+					var value;
+					if (b.by % 2 === 1) {
+						value = answer.horizontal[(b.by - 1) / 2][(b.bx - 2) / 2];
+					} else {
+						value = answer.vertical[(b.by - 2) / 2][(b.bx - 1) / 2];
+					}
+					if (value === 0) {
+						b.lineBySolver = 0;
+						b.qsubBySolver = 0;
+					} else if (value === 1) {
+						b.lineBySolver = 1;
+						b.qsubBySolver = 0;
+					} else if (value === 2) {
+						b.lineBySolver = 0;
+						b.qsubBySolver = 2;
+					}
+				}
+				for (var i = 0; i < this.cell.length; ++i) {
+					var c = this.cell[i];
+					var ans = answer.cell[(c.by - 1) / 2][(c.bx - 1) / 2];
+					if (ans === -1 || c.qnum >= 0) {
+						c.qansBySolver = 0;
+						c.qsubBySolver = 0;
+					} else if (ans === -2) {
+						c.qansBySolver = 1;
+						c.qsubBySolver = 0;
+					} else if (ans === -3) {
+						c.qansBySolver = 0;
+						c.qsubBySolver = 1;
+					}
+				}
+			} else {
+				for (var i = 0; i < this.border.length; ++i) {
+					this.border[i].lineBySolver = 0;
+					this.border[i].qsubBySolver = 2;
+				}
+				for (var i = 0; i < this.cell.length; ++i) {
+					this.cell[i].qansBySolver = 0;
+					this.cell[i].qsubBySolver = 0;
+				}
+			}
+			this.puzzle.painter.paintAll();
+		}
 	},
 	"Board@yajilin": {
 		redrawAffected: function(cells) {
@@ -395,13 +487,16 @@
 			var info = cell.error || cell.qinfo;
 			if (this.puzzle.getConfig("disptype_yajilin") === 2 && cell.qnum !== -1) {
 				return "rgb(224,224,224)";
-			} else if (cell.qans === 1) {
+			} else if (cell.qans === 1 || cell.qansBySolver === 1) {
 				if (info === 1) {
 					return this.errcolor1;
-				} else if (cell.trial) {
-					return this.trialcolor;
 				}
-				return this.shadecolor;
+				if (cell.qans === 1 && cell.qansBySolver === 1) {
+					return !cell.trial ? this.solverqanscolor : this.solvertrialcolor;
+				} else if (cell.qansBySolver === 1) {
+					return this.solvercolor;
+				}
+				return !cell.trial ? this.shadecolor : this.trialcolor;
 			} else if (info === 1) {
 				return this.errbcolor1;
 			}

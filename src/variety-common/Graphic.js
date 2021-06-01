@@ -229,8 +229,16 @@ pzpr.classmgr.makeCommon({
 				var cell = clist[i];
 
 				g.vid = "c_dot_" + cell.id;
-				if (cell.isDot()) {
-					g.fillStyle = !cell.trial ? this.qanscolor : this.trialcolor;
+				if (cell.isDot() || cell.isDotBySolver()) {
+					var c;
+					if (cell.isDot() && cell.isDotBySolver()) {
+						c = !cell.trial ? this.solverqanscolor : this.solvertrialcolor;
+					} else if (cell.isDotBySolver()) {
+						c = this.solvercolor;
+					} else {
+						c = !cell.trial ? this.qanscolor : this.trialcolor;
+					}
+					g.fillStyle = c;
 					g.fillCircle(cell.bx * this.bw, cell.by * this.bh, dsize);
 				} else {
 					g.vhide();

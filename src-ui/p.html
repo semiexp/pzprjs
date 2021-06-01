@@ -101,10 +101,7 @@ if ('serviceWorker' in navigator) {
      </menu></li>
    </menu></li>
    <li id="menu_help"><span>__ヘルプ__Help__</span><menu label="__ヘルプ__Help__">
-     <li class="link" data-pidlink="rules.html?"><a target="_blank">__ルール__Rules__</a></li>
-     <hr>
-     <li data-popup="about"><span>__puzz.linkについて__About__</span></li>
-     <li class="link"><a target="_blank" href="https://github.com/robx/pzprjs/issues">__バグレポートと機能リクエスト__Bug reports and feature requests__</a></li>
+     <li data-popup="about"><span>__pzprRT について__About__</span></li>
    </menu></li>
   </menu>
   <div id="usepanel" style="display:none;">
@@ -585,10 +582,85 @@ if ('serviceWorker' in navigator) {
   </div>
 
   <div class="popup" id="about">
-    <div class="titlebar">__puzz.linkについて__About__</div>
+    <div class="titlebar">__pzprRT について__About__</div>
     <form name="about">
-      <p><a href="https://github.com/robx/pzprjs">github.com/robx/pzprjs</a> version <%= git.hash %></p>
+      <p><a href="https://github.com/semiexp/pzprjs">github.com/semiexp/pzprjs</a> version <%= git.hash %></p>
+      <p>A fork of <a href="https://github.com/robx/pzprjs">github.com/robx/pzprjs</a></p>
       <p>based on <span>__ぱずぷれv3__PUZ-PRE v3__</span> by <span>__は はっぱ/連続発破__happa__</span></p>
+      <p>pzprRT uses <a href="https://github.com/semiexp/csugar">csugar</a>, which is based on <a href="https://cspsat.gitlab.io/sugar/">Sugar</a> and <a href="http://minisat.se/">MiniSat</a>, as the internal solver.</p>
+      <pre style="overflow:scroll;display:inline-block;height:500px;width:500px;background-color: white;">
+Copyright 2020- semiexp
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+License
+
+Sugar (A SAT-based CSP Solver) version 2
+
+Copyright (c) 2008-2012
+by Naoyuki Tamura (tamura @ kobe-u.ac.jp),
+    Tomoya Tanjo, and
+    Mutsunori Banbara (banbara @ kobe-u.ac.jp)
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+  * Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  * Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the
+    distribution.
+  * Neither the name of the Kobe University nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
+            Copyright (c) 2007-2010  Niklas Sorensson
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+      </pre>
       <button type="button" class="btn btn-ok" data-button-exec="close">OK</button>
     </form>
   </div>

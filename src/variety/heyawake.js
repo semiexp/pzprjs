@@ -78,7 +78,91 @@
 		minnum: 0
 	},
 	Board: {
-		hasborder: 1
+		hasborder: 1,
+		autoSolve: function (force) {
+			if (!this.is_autosolve && !force) {
+				var needUpdateField = false;
+				for (var i = 0; i < this.cell.length; ++i) {
+					var c = this.cell[i];
+					if (c.qansBySolver !== 0 || c.qsubBySolver !== 0) {
+						needUpdateField = true;
+						c.qansBySolver = 0;
+						c.qsubBySolver = 0;
+					}
+				}
+				if (needUpdateField) this.puzzle.painter.paintAll();
+				return;
+			}
+			var height = this.maxby / 2;
+			var width = this.maxbx / 2;
+			var regions = [];
+			var clues = [];
+
+			var rooms = this.roommgr.components;
+			for (var i = 0; i < rooms.length; ++i) {
+				var clist = rooms[i].clist;
+
+				var clue = -1;
+				var region = [];
+				for (var j = 0; j < clist.length; ++j) {
+					region.push({y: (clist[j].by - 1) / 2, x: (clist[j].bx - 1) / 2});
+					if (clist[j].qnum >= 0) {
+						clue = clist[j].qnum;
+					}
+				}
+				regions.push(region);
+				clues.push(clue);
+			}
+
+			var horizontal = [];
+			var vertical = [];
+			for (var i = 0; i < height - 1; ++i) {
+				horizontal.push(new Array(width).fill(0));
+			}
+			for (var i = 0; i < height; ++i) {
+				vertical.push(new Array(width - 1).fill(0));
+			}
+			for (var i = 0; i < this.border.length; ++i) {
+				var b = this.border[i];
+				if (b.by % 2 === 0) {
+					// horizontal
+					horizontal[(b.by - 2) / 2][(b.bx - 1) / 2] = (b.ques === 1);
+				} else {
+					// vertical
+					vertical[(b.by - 1) / 2][(b.bx - 2) / 2] = (b.ques === 1);
+				}
+			}
+
+			var answer = Cspuz.puzzle.solveHeyawake(height, width, regions, clues, horizontal, vertical);
+			if (answer !== null) {
+				for (var i = 0; i < this.cell.length; ++i) {
+					var c = this.cell[i];
+					var ans = answer[(c.by - 1) / 2][(c.bx - 1) / 2];
+					if (ans === -1) {
+						c.qansBySolver = 0;
+						c.qsubBySolver = 0;
+					} else if (ans === -2) {
+						c.qansBySolver = 1;
+						c.qsubBySolver = 0;
+					} else if (ans === -3) {
+						c.qansBySolver = 0;
+						c.qsubBySolver = 1;
+					}
+				}
+			} else {
+				for (var i = 0; i < this.cell.length; ++i) {
+					var c = this.cell[i];
+					if ((((c.by - 1) / 2) ^ ((c.bx - 1) / 2)) & 1) {
+						c.qansBySolver = 1;
+						c.qsubBySolver = 0;
+					} else {
+						c.qansBySolver = 0;
+						c.qsubBySolver = 1;
+					}
+				}
+			}
+			this.puzzle.painter.paintAll();
+		}
 	},
 
 	AreaUnshadeGraph: {
@@ -98,9 +182,10 @@
 		bgcellcolor_func: "qsub1",
 
 		paint: function() {
-			this.drawBGCells();
+			// this.drawBGCells();
 			this.drawGrid();
 			this.drawShadedCells();
+			this.drawDotCells();
 
 			this.drawQuesNumbers();
 

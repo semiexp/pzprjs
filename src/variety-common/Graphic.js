@@ -47,7 +47,7 @@ pzpr.classmgr.makeCommon({
 			this.drawCells_common("c_fulls_", this.getShadedCellColor);
 		},
 		getShadedCellColor: function(cell) {
-			if (cell.qans !== 1) {
+			if (cell.qans !== 1 && cell.qansBySolver !== 1) {
 				return null;
 			}
 			var info = cell.error || cell.qinfo;
@@ -56,11 +56,17 @@ pzpr.classmgr.makeCommon({
 			} else if (info === 2) {
 				return this.errcolor2;
 			} else if (cell.trial) {
-				return this.trialcolor;
+				return cell.qansBySolver === 1 ? this.solvertrialcolor : this.trialcolor;
 			} else if (this.puzzle.execConfig("irowakeblk")) {
 				return cell.sblk.color;
 			}
-			return this.shadecolor;
+			if (cell.qans === 1 && cell.qansBySolver === 1) {
+				return this.solverqanscolor;
+			} else if (cell.qans === 1) {
+				return this.shadecolor;
+			} else {
+				return this.solvercolor;
+			}
 		},
 
 		//---------------------------------------------------------------------------

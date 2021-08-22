@@ -192,6 +192,10 @@
 				this.setQnums(val);
 				this.setQans(0);
 				this.setQsub(0);
+
+				if (this.puzzle.editmode) {
+					this.board.autoSolve();
+				}
 			},
 			setQnums: function(val) {
 				if (sameArray(this.qnums, val)) {
@@ -347,6 +351,72 @@
 			enabled: true
 		},
 
+		Board: {
+			autoSolve: function (force) {
+				if (!this.is_autosolve && !force) {
+					var needUpdateField = false;
+					for (var i = 0; i < this.cell.length; ++i) {
+						var c = this.cell[i];
+						if (c.qansBySolver !== 0 || c.qsubBySolver !== 0) {
+							needUpdateField = true;
+							c.qansBySolver = 0;
+							c.qsubBySolver = 0;
+						}
+					}
+					if (needUpdateField) this.puzzle.painter.paintAll();
+					return;
+				}
+				var height = this.maxby / 2;
+				var width = this.maxbx / 2;
+
+				var clues = [];
+				for (var y = 0; y < height; ++y) {
+					var row = [];
+					for (var x = 0; x < width; ++x) {
+						row.push(null);
+					}
+					clues.push(row);
+				}
+				for (var i = 0; i < this.cell.length; ++i) {
+					var c = this.cell[i];
+					var y = (c.by - 1) / 2;
+					var x = (c.bx - 1) / 2;
+
+					if (c.qnums.length >= 1) {
+						clues[y][x] = c.qnums;
+					}
+				}
+				var answer = Cspuz.puzzle.solveTapa(height, width, clues);
+				if (answer !== null) {
+					for (var i = 0; i < this.cell.length; ++i) {
+						var c = this.cell[i];
+						var ans = answer[(c.by - 1) / 2][(c.bx - 1) / 2];
+						if (ans === -1 || c.qnums.length > 0) {
+							c.qansBySolver = 0;
+							c.qsubBySolver = 0;
+						} else if (ans === -2) {
+							c.qansBySolver = 1;
+							c.qsubBySolver = 0;
+						} else if (ans === -3) {
+							c.qansBySolver = 0;
+							c.qsubBySolver = 1;
+						}
+					}
+				} else {
+					for (var i = 0; i < this.cell.length; ++i) {
+						var c = this.cell[i];
+						if ((((c.by - 1) / 2) ^ ((c.bx - 1) / 2)) & 1) {
+							c.qansBySolver = 1;
+							c.qsubBySolver = 0;
+						} else {
+							c.qansBySolver = 0;
+							c.qsubBySolver = 1;
+						}
+					}
+				}
+				this.puzzle.painter.paintAll();
+			}
+		},
 		//---------------------------------------------------------
 		// 画像表示系
 		Graphic: {

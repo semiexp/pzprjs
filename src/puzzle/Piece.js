@@ -170,13 +170,14 @@ pzpr.classmgr.makeCommon({
 				this.trial = trialstage;
 			}
 
-			if (this.puzzle.editmode) {
-				this.board.autoSolve();
-			}
 			this.board.modifyInfo(this, this.group + "." + prop);
 
 			if (!!this.posthook[prop]) {
 				this.posthook[prop].call(this, num);
+			}
+
+			if (this.puzzle.editmode) {
+				this.board.autoSolve();
 			}
 		},
 		addOpe: function(property, old, num) {
